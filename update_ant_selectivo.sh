@@ -1,5 +1,5 @@
-@Version Number
-VERSION=0.1
+#Version Number
+VERSION=0.2
 ejecutar_maven=0
 do_fresh_install=0
 update_config_no_overwrite=0
@@ -9,7 +9,7 @@ escape_install_dir="\/home\/facundo\/Documentos\/Trabajos\/SeDiCi\/Entornos\/Wor
 MAVEN_PHASES="clean package"
 JAVA_OPTS="JAVA_OPTS=-Xms512m -Xmx2048m"
 
-while getopts ':mifch' OPTION; do
+while getopts ':mifchr:' OPTION; do
                 case $OPTION in
                         m)
 				#Se ejecuta el comando MVN
@@ -31,8 +31,13 @@ while getopts ':mifch' OPTION; do
 				;;
 
 			h)
-				printf "======================================================\n[[[ AYUDA (VERSION $VERSION)]]] update_ant_selectivo [-mifch]\n\n'update_ant_selectivo' es una script que actualiza la instalación actual de DSpace. Presente distintos parámetros:\n\t\tSi no tiene parámetros se ejecuta un ant update con configuraciones particulares [desde ahora <ant_selectivo>], de tal forma de que no la configuración de la aplicación no se cambia, y otras cosas mas (se borran los directorio de backup, etc.).\n\t\t-m Se ejecuta un 'mvn package' y luego ejecuta el <ant_selectivo>.\n\t\t-i Se ejecuta un 'mvn install' y luego un <ant_selectivo>. Utilizado cuando se necesita actualizar el repositorio local debido a cambios de clases locales.\n\t\t-f Se realiza un 'ant fresh_install'.\n\t\t-c Se realiza un <ant_selectivo> pero pisando las configuraciones.\n\t\t-h Muestra este mensaje de ayuda.\n======================================================\n"
+				printf "======================================================\n[[[ AYUDA (VERSION $VERSION)]]] update_ant_selectivo [-mifchr]\n\n'update_ant_selectivo' es una script que actualiza la instalación actual de DSpace. Presente distintos parámetros:\n\t\tSi no tiene parámetros se ejecuta un ant update con configuraciones particulares [desde ahora <ant_selectivo>], de tal forma de que no la configuración de la aplicación no se cambia, y otras cosas mas (se borran los directorio de backup, etc.).\n\t\t-m Se ejecuta un 'mvn package' y luego ejecuta el <ant_selectivo>.\n\t\t-i Se ejecuta un 'mvn install' y luego un <ant_selectivo>. Utilizado cuando se necesita actualizar el repositorio local debido a cambios de clases locales.\n\t\t-f Se realiza un 'ant fresh_install'.\n\t\t-c Se realiza un <ant_selectivo> pero pisando las configuraciones.\n\t\t-r <diretorio_raiz> Indica el directorio raíz donde se encuentra el fuente de DSpace. Si no se indica, entonces se utiliza  por defecto $root_dir.\n\t\t-h Muestra este mensaje de ayuda.\n======================================================\n"
 				exit 0
+				;;
+			r)
+				root_dir=$OPTARG
+                                install_dir=$root_dir/install
+                                escape_install_dir=`echo $install_dir | sed 's:\/:\\\/:g'`
 				;;
 			?)
 				echo "Parámetro inválido."
