@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#Create all symbolic links in ./bin directory that match with "git-..." custom scripts. This will be used by PATH enviroment
+
+for file in `ls | grep "git-.*\.sh" | tr '\n' ' '`; do
+	ln -s `pwd`/$file ./bin/`echo "$file" | sed 's/\.sh//'`
+done

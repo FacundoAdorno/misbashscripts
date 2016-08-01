@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
+eclipse 2> /dev/null

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#Script for opening the visualVM java application monitor
+#@Author Facundo
+
+invocation_dir=`pwd`
+cd "/home/facundo/Programas/visualvm_138/bin"
+./visualvm&
+cd "$invocation_dir"

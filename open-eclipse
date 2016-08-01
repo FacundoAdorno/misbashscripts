@@ -1,0 +1,42 @@
+#!/bin/bash
+#Las siguientes 2 líneas no funcionan...
+#####export PGPASSFILE="/home/facundo/Programas/Postgres/pgpass.conf"
+#####mysql --defaults-extra-file=/home/facundo/Programas/MySQL/mysql-opts
+
+###Eclipse Luna
+#ECLIPSE_HOME=/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
+###Eclipse Neon
+ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon
+
+mensaje(){
+ echo "================================================================"
+ echo "================$1================"
+ echo "================================================================"
+}
+
+test_finalization(){
+  if [ "$?" -ne 0 ];then
+    mensaje "Se ha generado un error..."
+    exit 1
+  fi
+}
+
+#####  INIT  #####
+while getopts ':ps' OPTION; do
+	case $OPTION in
+		p) su -c "pg_ctl start" postgres
+		   test_finalization
+		   ;;
+
+		s) systemctl start mysqld.service
+		   test_finalization
+		   ;;
+
+		?)
+		   echo "Parámetro inválido."
+		   ;;
+	esac
+done
+
+bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
+

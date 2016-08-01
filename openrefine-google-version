@@ -1,0 +1,11 @@
+#!/bin/bash
+
+REFINE_DIR="/home/facundo/Programas/google-refine-2.5"
+ORIGINAL_CURRENT_DIR="`pwd`"
+
+## Change directory and execute the google refine application
+cd $REFINE_DIR
+./refine
+
+## Get back to the original directory where the user exec the google-refine
+cd $ORIGINAL_CURRENT_DIR
