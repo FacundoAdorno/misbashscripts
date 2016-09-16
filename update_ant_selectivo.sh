@@ -1,5 +1,5 @@
 #Version Number
-VERSION=0.2
+VERSION=0.3
 ejecutar_maven=0
 do_fresh_install=0
 update_config_no_overwrite=0
@@ -49,7 +49,7 @@ while getopts ':mifchr:' OPTION; do
 #Ejecuto MVN si no se indica lo contrario, haciendo un install de aquellos proyectos que me interesan
 if [ "$ejecutar_maven" -gt 0 ]; then
 #	mvn clean install -P \!dspace-jspui,\!dspace-rdf,\!dspace-sword,\!dspace-swordv2,\!dspace-rest
-	env "$JAVA_OPTS"  mvn $MAVEN_PHASES -P \!dspace-jspui,\!dspace-rdf,\!dspace-sword,\!dspace-swordv2,\!dspace-services,\!dspace-swordv2,\!dspace-xmlui-mirage2,\!dspace-lni
+	env "$JAVA_OPTS"  mvn $MAVEN_PHASES -P \!dspace-jspui,\!dspace-rdf,\!dspace-sword,\!dspace-swordv2,\!dspace-swordv2,\!dspace-xmlui-mirage2,\!dspace-lni
 fi
 
 #Creo el directorio de instalación si es que no existe
@@ -69,7 +69,7 @@ else
   ant update_code
   ant clean_backups
   if [ "$update_config_no_overwrite" -gt 0 ];then
-    ant update_configs -Doverwrite=false
+    ant update_configs -Doverwrite=true
   fi
   ant update_webapps
   ant clean_backups
