@@ -3,15 +3,28 @@
 #####export PGPASSFILE="/home/facundo/Programas/Postgres/pgpass.conf"
 #####mysql --defaults-extra-file=/home/facundo/Programas/MySQL/mysql-opts
 
+#script-version
+VERSION=0.2
+
 ###Eclipse Luna
 #ECLIPSE_HOME=/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
 ###Eclipse Neon
 ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon
+CURRENT_DIR=`pwd`
+
 
 mensaje(){
  echo "================================================================"
  echo "================$1================"
  echo "================================================================"
+}
+
+get_eclipse_version(){
+  if [ -f "$ECLIPSE_HOME/.eclipseproduct" ];then
+     more "$ECLIPSE_HOME/.eclipseproduct" | grep version | sed 's/version=//g'
+  else
+     printf "unknown"
+  fi
 }
 
 test_finalization(){
@@ -21,22 +34,28 @@ test_finalization(){
   fi
 }
 
+ECLIPSE_VERSION=`get_eclipse_version`
+
 #####  INIT  #####
-while getopts ':ps' OPTION; do
+while getopts ':psv' OPTION; do
 	case $OPTION in
-		p) su -c "pg_ctl start" postgres
+		p) cd ~
+		   su -c "pg_ctl start" postgres
 		   test_finalization
+		   cd $CURRENT_DIR
 		   ;;
 
 		s) systemctl start mysqld.service
 		   test_finalization
 		   ;;
-
+		v) #Imprimiento versión de eclipse y del script
+		   printf "* * * *\n* * *\n* *\n*ECLIPSE VERSION -->  $ECLIPSE_VERSION\n*OPEN-ECLIPSE VERSION --> $VERSION\n* *\n* * *\n* * * *\n"
+		   ;;
 		?)
 		   echo "Parámetro inválido."
 		   ;;
 	esac
 done
 
-bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
+#bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
 
