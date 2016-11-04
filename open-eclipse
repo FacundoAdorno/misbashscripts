@@ -57,5 +57,5 @@ while getopts ':psv' OPTION; do
 	esac
 done
 
-#bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
+bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
 
