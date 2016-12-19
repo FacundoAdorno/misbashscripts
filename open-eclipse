@@ -12,6 +12,9 @@ VERSION=0.2
 ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon
 CURRENT_DIR=`pwd`
 
+#Para resolver problema de visualización en entorno KDE
+export SWT_GTK3=0
+
 
 mensaje(){
  echo "================================================================"
@@ -50,9 +53,11 @@ while getopts ':psv' OPTION; do
 		   ;;
 		v) #Imprimiento versión de eclipse y del script
 		   printf "* * * *\n* * *\n* *\n*ECLIPSE VERSION -->  $ECLIPSE_VERSION\n*OPEN-ECLIPSE VERSION --> $VERSION\n* *\n* * *\n* * * *\n"
+		   exit 3
 		   ;;
 		?)
 		   echo "Parámetro inválido."
+		   exit 2
 		   ;;
 	esac
 done
