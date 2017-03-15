@@ -1,4 +1,5 @@
 #!/bin/bash
+# Script que genera archivos falsos de backups
 
 TMP_FILE=/tmp/test_file_safe_to_delete.txt
 #Default number of copies to do
