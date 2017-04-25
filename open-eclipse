@@ -4,12 +4,13 @@
 #####mysql --defaults-extra-file=/home/facundo/Programas/MySQL/mysql-opts
 
 #script-version
-VERSION=0.2
+VERSION=0.2.1
 
 ###Eclipse Luna
 #ECLIPSE_HOME=/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
 ###Eclipse Neon
-ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon
+ECLIPSE_DIR_VERSION="4.6.3"
+ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon/$ECLIPSE_DIR_VERSION
 CURRENT_DIR=`pwd`
 
 #Para resolver problema de visualización en entorno KDE
