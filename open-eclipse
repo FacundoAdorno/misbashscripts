@@ -4,7 +4,7 @@
 #####mysql --defaults-extra-file=/home/facundo/Programas/MySQL/mysql-opts
 
 #script-version
-VERSION=0.2.1
+VERSION=0.3.0
 
 ###Eclipse Luna
 #ECLIPSE_HOME=/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
@@ -31,6 +31,15 @@ get_eclipse_version(){
   fi
 }
 
+is_eclipse_open(){
+
+    ps au | awk "{ print \$11 }" | grep "$ECLIPSE_HOME/eclipse" > /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Eclipse is already open..."
+        exit 0
+    fi
+}
+
 test_finalization(){
   if [ "$?" -ne 0 ];then
     mensaje "Se ha generado un error..."
@@ -41,7 +50,7 @@ test_finalization(){
 ECLIPSE_VERSION=`get_eclipse_version`
 
 #####  INIT  #####
-while getopts ':psv' OPTION; do
+while getopts ':psvh' OPTION; do
 	case $OPTION in
 		p) cd ~
 		   su -c "pg_ctl start" postgres
@@ -56,6 +65,14 @@ while getopts ':psv' OPTION; do
 		   printf "* * * *\n* * *\n* *\n*ECLIPSE VERSION -->  $ECLIPSE_VERSION\n*OPEN-ECLIPSE VERSION --> $VERSION\n* *\n* * *\n* * * *\n"
 		   exit 3
 		   ;;
+        h)
+            echo "[HELP] This program starts eclipse located in '$ECLIPSE_HOME', besides it accepts parameters."
+            echo "-p: start postrgesql."
+            echo "-s: start mysql."
+            echo "-v: show the current eclipse version"
+            echo "-h: show this help text."
+            exit 0
+            ;;
 		?)
 		   echo "Parámetro inválido."
 		   exit 2
@@ -63,5 +80,6 @@ while getopts ':psv' OPTION; do
 	esac
 done
 
+is_eclipse_open
 bash -c "$ECLIPSE_HOME/eclipse& 2> /dev/null"
 
