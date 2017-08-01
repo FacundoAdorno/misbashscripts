@@ -4,13 +4,14 @@
 #####mysql --defaults-extra-file=/home/facundo/Programas/MySQL/mysql-opts
 
 #script-version
-VERSION=0.3.0
+VERSION=0.3.1
 
-###Eclipse Luna
-#ECLIPSE_HOME=/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/eclipse
 ###Eclipse Neon
-ECLIPSE_DIR_VERSION="4.6.3"
-ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon/$ECLIPSE_DIR_VERSION
+#ECLIPSE_DIR_VERSION="4.6.3"
+#ECLIPSE_HOME=/home/facundo/Programas/eclipse_neon/$ECLIPSE_DIR_VERSION
+###Eclipse Oxygen
+ECLIPSE_DIR_VERSION="4.7.0"
+ECLIPSE_HOME=/home/facundo/Programas/eclipse_oxygen/$ECLIPSE_DIR_VERSION
 CURRENT_DIR=`pwd`
 
 #Para resolver problema de visualización en entorno KDE
@@ -32,8 +33,7 @@ get_eclipse_version(){
 }
 
 is_eclipse_open(){
-
-    ps au | awk "{ print \$11 }" | grep "$ECLIPSE_HOME/eclipse" > /dev/null
+    ps -aux | awk "{ print \$11 }" | grep -q "$ECLIPSE_HOME/eclipse"
     if [ $? -eq 0 ]; then
         echo "Eclipse is already open..."
         exit 0

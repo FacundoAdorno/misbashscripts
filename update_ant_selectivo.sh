@@ -1,7 +1,8 @@
 #Version Number
-VERSION=0.3
+VERSION=0.3.1
 ejecutar_maven=0
 do_fresh_install=0
+only_compilation=0
 update_config_no_overwrite=0
 root_dir="/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/Workspaces/CIC_Digital/DSpace"
 install_dir="/home/facundo/Documentos/Trabajos/SeDiCi/Entornos/Workspaces/CIC_Digital/DSpace/install"
@@ -9,7 +10,7 @@ escape_install_dir="\/home\/facundo\/Documentos\/Trabajos\/SeDiCi\/Entornos\/Wor
 MAVEN_PHASES="clean package"
 JAVA_OPTS="JAVA_OPTS=-Xms512m -Xmx2048m"
 
-while getopts ':mifchr:' OPTION; do
+while getopts ':mifdchr:' OPTION; do
                 case $OPTION in
                         m)
 				#Se ejecuta el comando MVN
@@ -29,9 +30,12 @@ while getopts ':mifchr:' OPTION; do
                         c)
 				update_config_no_overwrite=1
 				;;
+                        d)
+                                 only_compilation=1
+                                 ;;
 
 			h)
-				printf "======================================================\n[[[ AYUDA (VERSION $VERSION)]]] update_ant_selectivo [-mifchr]\n\n'update_ant_selectivo' es una script que actualiza la instalación actual de DSpace. Presente distintos parámetros:\n\t\tSi no tiene parámetros se ejecuta un ant update con configuraciones particulares [desde ahora <ant_selectivo>], de tal forma de que no la configuración de la aplicación no se cambia, y otras cosas mas (se borran los directorio de backup, etc.).\n\t\t-m Se ejecuta un 'mvn package' y luego ejecuta el <ant_selectivo>.\n\t\t-i Se ejecuta un 'mvn install' y luego un <ant_selectivo>. Utilizado cuando se necesita actualizar el repositorio local debido a cambios de clases locales.\n\t\t-f Se realiza un 'ant fresh_install'.\n\t\t-c Se realiza un <ant_selectivo> pero pisando las configuraciones.\n\t\t-r <diretorio_raiz> Indica el directorio raíz donde se encuentra el fuente de DSpace. Si no se indica, entonces se utiliza  por defecto $root_dir.\n\t\t-h Muestra este mensaje de ayuda.\n======================================================\n"
+				printf "======================================================\n[[[ AYUDA (VERSION $VERSION)]]] update_ant_selectivo [-mifchr]\n\n'update_ant_selectivo' es una script que actualiza la instalación actual de DSpace. Presente distintos parámetros:\n\t\tSi no tiene parámetros se ejecuta un ant update con configuraciones particulares [desde ahora <ant_selectivo>], de tal forma de que no la configuración de la aplicación no se cambia, y otras cosas mas (se borran los directorio de backup, etc.).\n\t\t-m Se ejecuta un 'mvn package' y luego ejecuta el <ant_selectivo>.\n\t\t-i Se ejecuta un 'mvn install' y luego un <ant_selectivo>. Utilizado cuando se necesita actualizar el repositorio local debido a cambios de clases locales.\n\t\t-f Se realiza un 'ant fresh_install'.\n\t\t-c Se realiza un <ant_selectivo> pero pisando las configuraciones.\n\t\t-r <diretorio_raiz> Indica el directorio raíz donde se encuentra el fuente de DSpace. Si no se indica, entonces se utiliza  por defecto $root_dir.\n\t\t-d Solamente se compila el proyecto, sin actualizar ni instalar la aplicación.\n\t\t-h Muestra este mensaje de ayuda.\n======================================================\n"
 				exit 0
 				;;
 			r)
@@ -50,6 +54,9 @@ while getopts ':mifchr:' OPTION; do
 if [ "$ejecutar_maven" -gt 0 ]; then
 #	mvn clean install -P \!dspace-jspui,\!dspace-rdf,\!dspace-sword,\!dspace-swordv2,\!dspace-rest
 	env "$JAVA_OPTS"  mvn $MAVEN_PHASES -P \!dspace-jspui,\!dspace-rdf,\!dspace-sword,\!dspace-swordv2,\!dspace-swordv2,\!dspace-xmlui-mirage2,\!dspace-lni
+      if [ "$only_compilation" -eq 1 ]; then
+            exit 0
+      fi
 fi
 
 #Creo el directorio de instalación si es que no existe
@@ -77,7 +84,7 @@ fi
 
 cd "$root_dir"
 #Limpiando todos los directorios compilados
-#mvn clean
+mvn clean
 
 #Comparamos los cambios en los directorios de configuracion de install con la version compilada
 #meld "$root_dir/dspace/config" "$install_dir"/config&
