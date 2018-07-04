@@ -1,7 +1,7 @@
 #!/bin/sh
 #Path to database dump file
 dbfile=
-dbname="dspace_cic"
+dbname="dspace_sedici_2018"
 pguser="dspace_user"
 password="dspace"
 
@@ -47,6 +47,9 @@ dropdb $dbname --host=localhost  --username=$pguser
 test_finalization
 mensaje "Creando una nueva base de datos...(password: 'dspace')"
 createdb  $dbname --host=localhost --username=$pguser --encoding=UTF8
+mensaje "Crear extensión 'pgcrypto'. Por favor introduzca password de usuarios 'postgres'..."
+psql -U postgres -d $dbname -c "CREATE EXTENSION pgcrypto;"
+
 test_finalization
 mensaje "Poblando la base de datos con el contenido de $dbfile..."
 psql --host=localhost --username=$pguser --dbname=$dbname --file=$dbfile
